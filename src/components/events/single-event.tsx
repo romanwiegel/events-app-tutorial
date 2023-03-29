@@ -1,16 +1,16 @@
 import { EventType } from "@/libs/types/Event.type";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 const SingleEvent = ({ data }: { data: EventType }) => {
-  const inputEmail = useRef<HTMLInputElement>();
+  const inputEmail = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [message, setMessage] = useState("");
 
-  const onSubmit = async (e: Event) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const emailValue = inputEmail.current?.value;
+    const emailValue = inputEmail.current ? inputEmail.current.value : null;
 
     const eventId = router?.query.id;
     const eventTitle = data.title;
@@ -38,7 +38,7 @@ const SingleEvent = ({ data }: { data: EventType }) => {
       if (!response.ok) throw new Error(`Error: ${response.status}`);
       const data = await response.json();
       setMessage(data.message);
-      inputEmail.current.value = "";
+      if (inputEmail && inputEmail.current) inputEmail.current.value = "";
     } catch (e) {
       console.log("ERROR", e);
     }
