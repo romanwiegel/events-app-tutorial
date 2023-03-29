@@ -56,7 +56,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     });
 
     fs.writeFileSync(
-      filePath,
+      "/tmp/data.json",
       JSON.stringify({ events_categories, all_events: newAllEvents })
     );
 
